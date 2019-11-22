@@ -1,17 +1,18 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-struct node{
+struct node
+{
     int data;
-    node* left;
-    node* right;
-    node* parent;
+    node *left;
+    node *right;
+    node *parent;
     char Color;
 };
 
-node* root = NULL;
+node *root = NULL;
 
-node* New_Node(int data)
+node *New_Node(int data)
 {
     node *temp = new node;
     temp->data = data;
@@ -20,158 +21,215 @@ node* New_Node(int data)
     return temp;
 }
 
-void Root_Should_Be_Black(node* temp)
+void Root_Should_Be_Black(node *temp)
 {
-    if(temp!=NULL)
+    if (temp != NULL)
     {
         temp->Color = 'B';
     }
 }
 
-void Parentization(node* temp)
+void Parentization(node *temp)
 {
-    if(temp->left != NULL)
+    if (temp->left != NULL)
     {
         temp->left->parent = temp;
     }
-    
-    if(temp->right != NULL)
+
+    if (temp->right != NULL)
     {
         temp->right->parent = temp;
     }
 }
 
-
-void Red_Uncle_Condition(node* temp)
+void Red_Uncle_Condition(node *temp)
 {
-    if(temp->data > root->data)   //Left-Sub-tree
+    if (temp->data < temp->parent->data) //Left-Sub-tree
     {
-        temp->Color = temp->parent->right->Color = 'B';
+        temp->Color = 'B';
+        temp->parent->right->Color = 'B';
         temp->parent->Color = 'R';
     }
     else
     {
-        temp->Color = temp->parent->left->Color = 'B';
+        temp->Color = 'B';
+        temp->parent->left->Color = 'B';
         temp->parent->Color = 'R';
     }
-    
 }
+void No_Uncle_Or_Black_Uncle_Condition(node *temp);
 
-void No_Uncle_Or_Black_Uncle_Condition(node* temp)
+void No_Consecutive_Red(node *temp)
 {
-
-}
-
-void No_Consecutive_Red(node* temp)
-{
-    if(temp->Color == 'R' && root != NULL)
+    if (temp->data < temp->parent->data) //Left-SubTree
     {
-        //For Left-Sub-Tree
-        if(temp->data < root->data )
+        if (temp->parent->right != NULL)
         {
-            if(temp->right != NULL )
+            if (temp->parent->right->Color == 'R')
             {
-                if(temp->right->Color == 'R')
-                {
-                    if(temp->parent->right != NULL && temp->parent->right->Color == 'R')
-                    {
-                        Red_Uncle_Condition(temp);
-                    }
-                    else
-                    {
-                       No_Uncle_Or_Black_Uncle_Condition(temp); 
-                    } 
-                }
+                Red_Uncle_Condition(temp);
             }
-            if(temp->left != NULL )
+            else
             {
-                if(temp->left->Color == 'R')
-                {
-                    if(temp->parent->right != NULL && temp->parent->right->Color == 'R')
-                    {
-                        Red_Uncle_Condition(temp);
-                    }
-                    else
-                    {
-                       No_Uncle_Or_Black_Uncle_Condition(temp); 
-                    } 
-                }
+                No_Uncle_Or_Black_Uncle_Condition(temp);
             }
         }
-        //For Right-Sub-Tree
         else
         {
-            if(temp->right != NULL )
+            cout << "Hello" << endl;
+            No_Uncle_Or_Black_Uncle_Condition(temp);
+        }
+    }
+
+    else
+    {
+        if (temp->parent->left != NULL)
+        {
+            if (temp->parent->left->Color == 'R')
             {
-                if(temp->right->Color == 'R')
-                {
-                    if(temp->parent->left != NULL && temp->parent->left->Color == 'R')
-                    {
-                        Red_Uncle_Condition(temp);
-                    }
-                    else
-                    {
-                       No_Uncle_Or_Black_Uncle_Condition(temp); 
-                    } 
-                }
+                Red_Uncle_Condition(temp);
             }
-            if(temp->left != NULL )
+            else
             {
-                if(temp->left->Color == 'R')
-                {
-                    if(temp->parent->left != NULL && temp->parent->left->Color == 'R')
-                    {
-                        Red_Uncle_Condition(temp);
-                    }
-                    else
-                    {
-                       No_Uncle_Or_Black_Uncle_Condition(temp); 
-                    } 
-                }
+                No_Uncle_Or_Black_Uncle_Condition(temp);
             }
         }
-        
+        else
+        {
+            No_Uncle_Or_Black_Uncle_Condition(temp);
+        }
+    }
+}
+node *Left_Rotation(node *temp)
+{
+    node *x = temp->right;
+    node *y = x->left;
+
+    x->left = temp;
+    temp->right = y;
+
+    return x;
+}
+
+node *Right_Rotation(node *temp)
+{
+    node *x = temp->left;
+    node *y = x->right;
+
+    x->right = temp;
+    temp->left = y;
+
+    return x;
+}
+
+void No_Uncle_Or_Black_Uncle_Condition(node *temp)
+{
+    if (temp->data < temp->parent->data) //Left-Sub-Tree
+    {
+        if (temp->right != NULL)
+        {
+            if (temp->right->Color == 'R')
+            {
+                temp->parent->left = Left_Rotation(temp->parent->left);
+                Right_Rotation(temp->parent);
+            }
+        }
+
+        if (temp->left != NULL)
+        {
+            if (temp->left->Color == 'R')
+            {
+                Right_Rotation(temp->parent);
+            }
+        }
+    }
+
+    else //Right-Sub-Tree
+    {
+        if (temp->right != NULL)
+        {
+            if (temp->right->Color == 'R')
+            {
+                Left_Rotation(temp->parent);
+            }
+        }
+
+        if (temp->left != NULL)
+        {
+            if (temp->left->Color == 'R')
+            {
+                temp->parent->right = Right_Rotation(temp->parent->right);
+                Left_Rotation(temp->parent);
+            }
+        }
     }
 }
 
-node* Insert_Node(node* temp, int data)
+node *Insert_Node(node *temp, int data)
 {
-    if(temp==NULL)
+    if (temp == NULL)
     {
         temp = New_Node(data);
     }
-    else if(data > temp->data)
+    else if (data > temp->data)
     {
-        temp->right = Insert_Node(temp->right , data);
+        temp->right = Insert_Node(temp->right, data);
     }
     else
     {
-        temp->left = Insert_Node(temp->left , data);
+        temp->left = Insert_Node(temp->left, data);
     }
 
     Root_Should_Be_Black(root);
     Parentization(temp);
-    No_Consecutive_Red(temp);
+    if (temp->Color == 'R')
+    {
+        if (temp->right != NULL || temp->left != NULL)
+        {
+            if (temp->right->Color == 'R' || temp->left->Color == 'R')
+            {
+                No_Consecutive_Red(temp);
+            }
+        }
+    }
 
     return temp;
 }
 
+node *Searching(int data)
+{
+    node *temp = root;
+    if (root == NULL)
+        cout << "The tree is Empty" << endl;
+    while (true)
+    {
+        if (temp == NULL)
+        {
+            cout << "Element is not Present in the Binary Tee" << endl;
+            break;
+        }
+        else if (temp->data == data)
+        {
+            cout << "Element is Present" << endl;
+            return temp;
+            break;
+        }
+        else if (data > temp->data)
+        {
+            temp = temp->right;
+        }
+        else
+        {
+            temp = temp->left;
+        }
+    }
+}
+
 int main()
 {
-        root = Insert_Node(root, 10);
-        root = Insert_Node(root,5);
-        root = Insert_Node(root,15);
-        root = Insert_Node(root,25);
-        root = Insert_Node(root,4);
-        root = Insert_Node(root,14);
-        root = Insert_Node(root,27);
-        
-        cout << root->data << " --> " << root->Color << endl;
-        cout << root->left->data << " --> " << root->right->Color << endl;
-        cout << root->right->data << " --> " << root->right->Color << endl;
-        cout << root->right->right->data << " --> " << root->right->right->Color << endl;
-        cout << root->right->left->data << " --> " << root->right->left->Color << endl;
-        cout << root->left->left->data << " --> " << root->left->left->Color << endl;
-        cout << root->right->right->right->data << " --> " << root->right->right->right->Color << endl;
-        return 0;
+    root = Insert_Node(root, 10);
+    root = Insert_Node(root, 9);
+    root = Insert_Node(root, 8);
+    cout << "Hello" << endl;
+    return 0;
 }
