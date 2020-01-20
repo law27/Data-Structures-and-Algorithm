@@ -1,5 +1,6 @@
 #include<iostream>
 using namespace std;
+string result;
 
 struct node
 {
@@ -30,23 +31,76 @@ public:
         head->next = ptr;
     }
 
-    int top()
+    char top()
     {
         return head->data;
     }
 
-    void pop()
+    char pop()
     {
         node* temp = head;
         head = temp->next;
+        char a = temp->data;
         delete temp;
+        return a;
     }
 };
 
+bool checkForPrescedance(char a, char b)
+{
+    
+}
+
+bool checkForOperators(char a)
+{
+    if (a == '*' || a == '-' || a == '/' || a == '+')
+    {
+        return true;
+    }
+    return false;
+}
 
 int main()
 {
     Stack stack;
-    //Everything will be filled here ASAP    
+    string value = "";
+    cin >> value;
+    result = "";
+    for (unsigned int i = 0; i < value.length(); i++)
+    {
+        if (value[i] == '(')
+        {
+            stack.push('(');
+        }
+        else if (value[i] == ')')
+        {
+            while (stack.top() != '(')
+            {
+                result += stack.pop();
+            }
+            stack.pop();
+        }
+        else if (checkForOperators(value[i]))
+        {
+            if (checkForOperators(stack.top()))
+            {
+                while (checkForPrescedance(stack.top(), value[i]))
+                {
+                    result += stack.pop();
+                }
+                    stack.push(value[i]);
+            }
+            else
+            {
+                stack.push(value[i]);
+            }
+        }
+        else
+        {
+            result += value[i];
+        }
+    }
+        
+
     return 0;
 }
