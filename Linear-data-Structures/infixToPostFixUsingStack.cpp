@@ -14,6 +14,7 @@ class Stack
 private:
     node* head;
 
+
 public:
     Stack()
     {
@@ -46,14 +47,56 @@ public:
     }
 };
 
-bool checkForPrescedance(char a, char b)
+bool checkForPrescedance(char a , char b)
 {
-    
+    int A = 0 ;
+    int B = 0 ;
+    if( a == '-')
+    {
+        A = 1 ;
+    }
+    else if ( a == '+')
+    {
+        A = 2 ;
+    }
+    else if ( a == '*')
+    {
+        A = 3 ;
+    }
+    else if ( a == '/')
+    {
+        A = 4 ;
+    }
+    else
+    {
+        A = 5 ;
+    }
+      if( b == '-')
+    {
+        B = 1 ;
+    }
+    else if ( b == '+')
+    {
+        B = 2 ;
+    }
+    else if ( b == '*')
+    {
+        B = 3 ;
+    }
+    else if ( b == '/')
+    {
+        B = 4 ;
+    }
+    else
+    {
+        B = 5 ;
+    }
+    return ( A > B) ? true : false ;
 }
 
 bool checkForOperators(char a)
 {
-    if (a == '*' || a == '-' || a == '/' || a == '+')
+    if (a == '*' || a == '-' || a == '/' || a == '+' || a == '^')
     {
         return true;
     }
@@ -62,7 +105,11 @@ bool checkForOperators(char a)
 
 int main()
 {
+    int testCase ;
+    cin >> testCase ;
     Stack stack;
+    while(testCase--)
+    {
     string value = "";
     cin >> value;
     result = "";
@@ -100,7 +147,9 @@ int main()
             result += value[i];
         }
     }
-        
+    cout << result << endl ;
+    }
+
 
     return 0;
 }
