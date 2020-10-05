@@ -8,6 +8,13 @@ struct node
     node *left;
     node *right;
     node *parent;
+    
+    ~destructor node()
+    {
+     delete left;
+        delete right;
+        delete parent;
+    }
 };
 
 node *root = NULL;
