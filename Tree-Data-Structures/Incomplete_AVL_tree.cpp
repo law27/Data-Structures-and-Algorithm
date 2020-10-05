@@ -49,6 +49,10 @@ public:
     {
         root = addNode(data,root);
     }
+    ~AVL_Tree()
+    {
+        delete root;
+    }
 };
 
 
