@@ -35,10 +35,7 @@ class Stack
     }
     int top()
     {
-        if(head == NULL)
-            return 0 ;
-        else
-            return head->data ;
+         return (head==NULL)? 0: head->data ;
     }
     bool isEmpty()
     {
