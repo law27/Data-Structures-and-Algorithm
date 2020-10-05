@@ -19,7 +19,7 @@ void BFS(int graph[noOfNode][noOfNode] , int start)
         int currentNode = helperQueue.front()  ;
         cout << currentNode << " --> " ;
         helperQueue.pop_front();
-        int *neighbours = *(graph+currentNode);
+        int *neighbours = graph[currentNode];
         for(int i = 0 ; i < noOfNode ; i++)
         {
             if( !visited[i] && neighbours[i] != 0 )
