@@ -100,6 +100,7 @@ public:
     }
     void Print()
     {
+        cout<<"This prints the linked list"<<'\n';
         node *temp = head;
         while (temp != NULL)
         {
