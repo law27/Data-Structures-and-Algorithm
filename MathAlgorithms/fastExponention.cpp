@@ -10,7 +10,7 @@ ll fastExponention(ll x , ll a) {
         return 1;
     }
     ll res = fastExponention(x, a / 2);
-    if(a % 2) {
+    if(a % 2==1) {
         return x * res * res;
     } else {
         return res * res ;
