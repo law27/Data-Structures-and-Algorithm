@@ -3,9 +3,9 @@ using namespace std;
 
 int *countingSort(int *arr, int length, int max)
 {
-    int *temp = new int[max];
-    int *output = new int[length];
-
+    int temp[max];
+    int output[max];
+   
     for (int i = 0; i < max; i++)
     {
         temp[i] = 0;
