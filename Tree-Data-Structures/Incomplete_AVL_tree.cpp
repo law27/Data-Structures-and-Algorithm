@@ -45,10 +45,6 @@ public:
     {
         root = NULL ;
     }
-    ~ AVL_Tree()
-    {
-        delete root ;
-    }
     node* addNode(int data)
     {
         root = addNode(data,root);
