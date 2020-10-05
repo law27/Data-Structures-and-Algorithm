@@ -9,7 +9,7 @@ struct node
     node *right;
     node *parent;
     
-    ~destructor node()
+    ~node()
     {
      delete left;
         delete right;
