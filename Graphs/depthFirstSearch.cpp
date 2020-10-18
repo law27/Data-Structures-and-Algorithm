@@ -1,8 +1,8 @@
 #include<iostream>
 using namespace std;
 
-void dfsTraversal(int currentNode, int **graph, bool *visited, int noOfNodes)
-{
+void dfsTraversal(int currentNode, int **graph, bool *visited, int noOfNodes) {
+
     if(visited[currentNode]) return ;
     else
     {
